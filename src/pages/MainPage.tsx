@@ -56,7 +56,7 @@ const MainPage = () => {
           index: index + 1, // auto-incremented
           id: post.id,
           title: post.title,
-          userName: user ? user.name : "Unknown User",
+          userName: user ? user.username : "Unknown User",
           userId: post.userId,
         };
       });
