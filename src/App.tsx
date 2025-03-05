@@ -15,7 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/post/:id" element={<PostDetailsPage />} />
+          <Route path="/post/:postId" element={<PostDetailsPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
