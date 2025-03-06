@@ -1,9 +1,15 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
   CircularProgress,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   List,
   ListItem,
@@ -15,7 +21,12 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Comment, Post, User } from "../types";
-import { fetchComments, fetchPost, fetchUser } from "../services/api";
+import {
+  deleteComment,
+  fetchComments,
+  fetchPost,
+  fetchUser,
+} from "../services/api";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,6 +40,32 @@ const PostDetailsPage = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [deleteId, setDeleteId] = useState(0);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
+
+  const handleOpenConfirm = () => {
+    setShowConfirm(true);
+  };
+
+  const handleCloseConfirm = () => {
+    setShowConfirm(false);
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      await deleteComment(commentId);
+
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
+      );
+
+      handleCloseConfirm();
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      setDeleteError(true);
+    }
+  };
 
   useEffect(() => {
     if (!postId) return;
@@ -215,7 +252,11 @@ const PostDetailsPage = () => {
                   <Typography>{comment.body}</Typography>
                 </ListItemText>
                 <IconButton
-                // sx={{ border: "1px dotted purple" }}
+                  // sx={{ border: "1px dotted purple" }}
+                  onClick={() => {
+                    handleOpenConfirm();
+                    setDeleteId(comment.id);
+                  }}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -224,6 +265,31 @@ const PostDetailsPage = () => {
           </List>
         </Paper>
       </Container>
+      <Dialog open={showConfirm} onClose={handleCloseConfirm}>
+        <DialogTitle>{"Confirm Delete Comment"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this comment?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseConfirm}>
+            Cancel
+          </Button>
+          <Button onClick={() => handleDeleteComment(deleteId)} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {deleteError && (
+        <Alert
+          sx={{ position: "fixed", bottom: 0 }}
+          severity="error"
+          onClose={() => setDeleteError(false)}
+        >
+          Sorry, something went wrong. Please try again later.
+        </Alert>
+      )}
     </>
   );
 };
