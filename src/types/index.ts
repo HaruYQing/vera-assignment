@@ -24,6 +24,6 @@ export interface PostWithUser {
   index: number; // Auto-incremented ID
   id: number; // 原始的 post id
   title: string;
-  userName: string;
+  name: string;
   userId: number;
 }

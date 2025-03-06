@@ -3,6 +3,8 @@ import {
   Button,
   CircularProgress,
   Container,
+  IconButton,
+  Paper,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -10,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Post, User } from "../types";
 import { fetchPost, fetchUser } from "../services/api";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 
 const PostDetailsPage = () => {
   const { postId } = useParams();
@@ -90,12 +93,63 @@ const PostDetailsPage = () => {
 
   // TO-DO: {post && ()}
   return (
-    <Container sx={{ py: 4 }}>
-      <Box>
-        <p>{post?.title}</p>
-        <span>{post?.body}</span>
-        <p>{user?.username}</p>
-      </Box>
+    <Container
+      sx={{
+        py: 4,
+        position: "relative",
+        // border: "1px dashed blue"
+      }}
+    >
+      <IconButton
+        onClick={() => navigate(-1)}
+        sx={{ position: "fixed", top: "16px", left: "16px" }}
+      >
+        <KeyboardBackspaceRoundedIcon />
+      </IconButton>
+      <Paper
+        sx={{
+          // border: "1px dashed green",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 4,
+          px: 1,
+          py: 4,
+          width: "100%",
+          maxWidth: "1200px",
+        }}
+      >
+        <Box
+          sx={{
+            border: "1px solid rgba(0,0,0,0.1)",
+            backgroundColor: "rgba(0,0,0,0.1)",
+            width: { xs: "80%", md: "85%", lg: "90%" },
+            px: 4,
+            py: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
+            {post?.title}
+          </Typography>
+          <Typography sx={{ fontWeight: "bolder" }}>
+            Author: {user?.name}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            border: "1px solid rgba(0,0,0,0.1)",
+            width: { xs: "80%", md: "85%", lg: "90%" },
+            px: 4,
+            py: 4,
+            display: "flex",
+          }}
+        >
+          <Typography>{post?.body}</Typography>
+        </Box>
+      </Paper>
     </Container>
   );
 };

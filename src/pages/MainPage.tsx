@@ -56,7 +56,7 @@ const MainPage = () => {
           index: index + 1, // auto-incremented
           id: post.id,
           title: post.title,
-          userName: user ? user.username : "Unknown User",
+          name: user ? user.name : "Unknown User",
           userId: post.userId,
         };
       });
@@ -137,10 +137,12 @@ const MainPage = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        my={3}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          my: 3,
+        }}
       >
         <Typography variant="h4">Posts</Typography>
         <Button
@@ -176,7 +178,7 @@ const MainPage = () => {
                       {post.title}
                     </Link>
                   </TableCell>
-                  <TableCell>{post.userName}</TableCell>
+                  <TableCell>{post.name}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
