@@ -149,12 +149,18 @@ const MainPage = () => {
           variant="contained"
           startIcon={<RefreshIcon />}
           onClick={handleRefresh}
+          color="success"
         >
           Refresh
         </Button>
       </Box>
       <TableContainer sx={{ maxWidth: "1200px" }}>
-        <Table stickyHeader>
+        <Table
+          stickyHeader
+          sx={{
+            backgroundColor: "#fff",
+          }}
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell sx={{ width: "15%" }}>Index</StyledTableCell>
@@ -192,6 +198,7 @@ const MainPage = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{ backgroundColor: "#fff" }}
       />
     </Container>
   );

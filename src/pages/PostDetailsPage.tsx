@@ -101,11 +101,56 @@ const PostDetailsPage = () => {
       }}
     >
       <IconButton
+        // TO-DO: return to the exact page that post is at
         onClick={() => navigate(-1)}
         sx={{ position: "fixed", top: "16px", left: "16px" }}
       >
         <KeyboardBackspaceRoundedIcon />
       </IconButton>
+      <Paper
+        sx={{
+          // border: "1px dashed green",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 4,
+          px: 1,
+          py: 4,
+          width: "100%",
+          maxWidth: "1200px",
+        }}
+      >
+        <Box
+          sx={{
+            border: "1px solid rgba(0,0,0,0.1)",
+            backgroundColor: "rgba(0,0,0,0.1)",
+            width: { xs: "80%", md: "85%", lg: "90%" },
+            px: 4,
+            py: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
+            {post?.title}
+          </Typography>
+          <Typography sx={{ fontWeight: "bolder" }}>
+            Author: {user?.name}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            border: "1px solid rgba(0,0,0,0.1)",
+            width: { xs: "80%", md: "85%", lg: "90%" },
+            px: 4,
+            py: 4,
+            display: "flex",
+          }}
+        >
+          <Typography>{post?.body}</Typography>
+        </Box>
+      </Paper>
       <Paper
         sx={{
           // border: "1px dashed green",
