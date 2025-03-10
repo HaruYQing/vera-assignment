@@ -1,54 +1,84 @@
-# React + TypeScript + Vite
+# Posts and Comments Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page application that displays posts and their comments from JSONPlaceholder API.
 
-Currently, two official plugins are available:
+## Setup Instructions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone the repository:
 
-## Expanding the ESLint configuration
+   ```
+   git clone https://github.com/HaruYQing/vera-assignment.git
+   cd vera-assignment
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. Install dependencies:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+   ```
+   npm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Create an `.env` file in the root directory with the following content:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+   ```
+   VITE_LOGGED_IN_USER_EMAIL=Eliseo@gardner.biz
+   ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+   This simulates an authenticated user who can delete their own comments.
+
+4. Start the development server:
+
+   ```
+   npm run dev
+   ```
+
+5. Open your browser and navigate to `http://localhost:5173` (or the URL shown in your terminal).
+
+## Features Included
+
+### Main Page
+
+- Displays all posts in a table with the following columns:
+  - Index (Auto-incremented ID)
+  - Title (Clickable to navigate to post details)
+  - User (Name)
+- Implemented a Refresh button with an icon that fetches updated data from the API
+- Added responsive design with a maximum width of 1600px
+- Applied custom MUI styling for components
+
+### Post Details Page
+
+- Shows detailed information about the selected post:
+  - Title
+  - User (Name)
+  - Body
+- Comments section displays all comments associated with the post
+- Comments are structured in a list showing:
+  - Name
+  - Body
+
+### Authentication and User Features
+
+- Simulated authentication using environment variables
+- Users can delete comments, but only if they were posted by the currently logged-in user (identified by email)
+- Added confirmation dialog before comment deletion
+
+### Technical Implementation
+
+- Built with React and TypeScript for type safety
+- Used React Router for navigation between pages
+- Implemented Material UI components for consistent styling
+- Created a responsive layout that works well on different screen sizes
+- Utilized Context API for auth state management
+- Implemented error handling for API requests
+
+### Optional Enhancements Implemented
+
+- Added pagination on the main posts table for improved data handling
+- Implemented authentication simulation via environment variables
+- Restricted comment deletion to the logged-in user's own comments
+- Added confirmation dialog before deletion
+
+## Development Notes
+
+- The application uses JSONPlaceholder as a mock API, which means that while delete operations appear to work, they don't actually modify the server data.
+- For demonstration purposes, the email "Eliseo@gardner.biz" is used to simulate a logged-in user. This user can delete their own comments (the first comment on the first post).
