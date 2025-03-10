@@ -82,3 +82,7 @@ A single-page application that displays posts and their comments from JSONPlaceh
 
 - The application uses JSONPlaceholder as a mock API, which means that while delete operations appear to work, they don't actually modify the server data.
 - For demonstration purposes, the email "Eliseo@gardner.biz" is used to simulate a logged-in user. This user can delete their own comments (the first comment on the first post).
+
+## Development Process
+
+This project was completed over several shorter work sessions, totaling approximately one full working day of effort.
