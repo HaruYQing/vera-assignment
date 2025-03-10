@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
 import MainPage from "./pages/MainPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
+import { AuthProvider } from "./contexts/AuthProvider";
 
 const theme = createTheme({
   // TO-DO: 主題設置
@@ -12,12 +13,14 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/post/:postId" element={<PostDetailsPage />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/post/:postId" element={<PostDetailsPage />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

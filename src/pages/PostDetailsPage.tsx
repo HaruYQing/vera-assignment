@@ -31,6 +31,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Face6RoundedIcon from "@mui/icons-material/Face6Rounded";
+import { useAuth } from "../contexts/authContext";
 
 const PostDetailsPage = () => {
   const { postId } = useParams();
@@ -43,6 +44,7 @@ const PostDetailsPage = () => {
   const [deleteId, setDeleteId] = useState(0);
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteError, setDeleteError] = useState(false);
+  const { loggedInUserEmail } = useAuth();
 
   const handleOpenConfirm = () => {
     setShowConfirm(true);
@@ -94,7 +96,6 @@ const PostDetailsPage = () => {
     fetchData();
   }, [postId]);
 
-  // TO-DO: replace by something looks better
   if (loading) {
     return (
       <Container
@@ -119,7 +120,6 @@ const PostDetailsPage = () => {
       </Container>
     );
   }
-  // TO-DO: use better words
   if (error) {
     return (
       <Container>
@@ -139,156 +139,170 @@ const PostDetailsPage = () => {
     );
   }
 
-  // TO-DO: {post && ()}
   return (
     <>
-      <IconButton
-        // TO-DO: return to the exact page that post is at
-        onClick={() => navigate(-1)}
-        sx={{ position: "absolute", top: "16px", left: "16px", zIndex: 2 }}
-      >
-        <KeyboardBackspaceRoundedIcon />
-      </IconButton>
-      <Container
-        sx={{
-          py: 4,
-          position: "relative",
-        }}
-      >
-        <Paper
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mt: 4,
-            px: 1,
-            py: 4,
-            width: "100%",
-            maxWidth: "1200px",
-          }}
-        >
-          <Typography variant="h4" sx={{ alignSelf: "start", ml: 3, mb: 2 }}>
-            Post
-          </Typography>
-          <Box
-            sx={{
-              border: "1px solid rgba(0,0,0,0.1)",
-              backgroundColor: "rgba(0,0,0,0.1)",
-              width: { xs: "80%", md: "85%", lg: "90%" },
-              px: 4,
-              py: 2,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+      {post ? (
+        <>
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{ position: "absolute", top: "16px", left: "16px", zIndex: 2 }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-              {post?.title}
-            </Typography>
-            <Typography sx={{ fontWeight: "bolder" }}>
-              Author: {user?.name}
-            </Typography>
-          </Box>
-          <Box
+            <KeyboardBackspaceRoundedIcon />
+          </IconButton>
+          <Container
             sx={{
-              border: "1px solid rgba(0,0,0,0.1)",
-              width: { xs: "80%", md: "85%", lg: "90%" },
-              px: 4,
               py: 4,
-              display: "flex",
+              position: "relative",
             }}
           >
-            <Typography>{post?.body}</Typography>
-          </Box>
-        </Paper>
-        <Paper
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mt: 4,
-            px: 1,
-            py: 4,
-            width: "100%",
-            maxWidth: "1200px",
-          }}
-        >
-          <Typography variant="h5" sx={{ alignSelf: "start", marginLeft: 4 }}>
-            Comments
-          </Typography>
-          <List
-            sx={{
-              // border: "1px dotted red",
-              width: { xs: "80%", md: "85%", lg: "90%" },
-            }}
-          >
-            {comments.map((comment, index) => (
-              <ListItem
-                key={index}
+            <Paper
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mt: 4,
+                px: 1,
+                py: 4,
+                width: "100%",
+                maxWidth: "1200px",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{ alignSelf: "start", ml: 3, mb: 2 }}
+              >
+                Post
+              </Typography>
+              <Box
                 sx={{
-                  border: "1px dotted rgba(0,0,0,0.3)",
-                  mb: 2,
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  backgroundColor: "rgba(0,0,0,0.1)",
+                  width: { xs: "80%", md: "85%", lg: "90%" },
+                  px: 4,
+                  py: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                <ListItemAvatar
-                  sx={{
-                    // border: "1px dotted gray",
-                    mb: "auto",
-                  }}
-                >
-                  <Avatar>
-                    <Face6RoundedIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  sx={{
-                    // border: "1px dotted blue",
-                    mr: 2,
-                  }}
-                >
-                  <Typography sx={{ fontWeight: "bold" }}>
-                    {comment.name}
-                  </Typography>
-                  <Typography>{comment.body}</Typography>
-                </ListItemText>
-                <IconButton
-                  // sx={{ border: "1px dotted purple" }}
-                  onClick={() => {
-                    handleOpenConfirm();
-                    setDeleteId(comment.id);
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      </Container>
-      <Dialog open={showConfirm} onClose={handleCloseConfirm}>
-        <DialogTitle>{"Confirm Delete Comment"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this comment?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleCloseConfirm}>
-            Cancel
-          </Button>
-          <Button onClick={() => handleDeleteComment(deleteId)} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {deleteError && (
-        <Alert
-          sx={{ position: "fixed", bottom: 0 }}
-          severity="error"
-          onClose={() => setDeleteError(false)}
-        >
-          Sorry, something went wrong. Please try again later.
-        </Alert>
+                <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
+                  {post?.title}
+                </Typography>
+                <Typography sx={{ fontWeight: "bolder" }}>
+                  Author: {user?.name}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  width: { xs: "80%", md: "85%", lg: "90%" },
+                  px: 4,
+                  py: 4,
+                  display: "flex",
+                }}
+              >
+                <Typography>{post?.body}</Typography>
+              </Box>
+            </Paper>
+            <Paper
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mt: 4,
+                px: 1,
+                py: 4,
+                width: "100%",
+                maxWidth: "1200px",
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ alignSelf: "start", marginLeft: 4 }}
+              >
+                Comments
+              </Typography>
+              <List
+                sx={{
+                  width: { xs: "80%", md: "85%", lg: "90%" },
+                }}
+              >
+                {comments.map((comment, index) => (
+                  <ListItem
+                    key={index}
+                    sx={{
+                      border: "1px dotted rgba(0,0,0,0.3)",
+                      mb: 2,
+                    }}
+                  >
+                    <ListItemAvatar
+                      sx={{
+                        mb: "auto",
+                      }}
+                    >
+                      <Avatar>
+                        <Face6RoundedIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      sx={{
+                        mr: 2,
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: "bold" }}>
+                        {comment.name}
+                      </Typography>
+                      <Typography>{comment.body}</Typography>
+                    </ListItemText>
+                    {comment.email === loggedInUserEmail && (
+                      <IconButton
+                        onClick={() => {
+                          handleOpenConfirm();
+                          setDeleteId(comment.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          </Container>
+          <Dialog open={showConfirm} onClose={handleCloseConfirm}>
+            <DialogTitle>{"Confirm Delete Comment"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this comment?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={handleCloseConfirm}>
+                Cancel
+              </Button>
+              <Button onClick={() => handleDeleteComment(deleteId)} autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {deleteError && (
+            <Alert
+              sx={{ position: "fixed", bottom: 0 }}
+              severity="error"
+              onClose={() => setDeleteError(false)}
+            >
+              Sorry, something went wrong. Please try again later.
+            </Alert>
+          )}
+        </>
+      ) : (
+        <>
+          <Container>
+            <Typography variant="h1">
+              Sorry, something went wrong. Please try again later.
+            </Typography>
+          </Container>
+        </>
       )}
     </>
   );

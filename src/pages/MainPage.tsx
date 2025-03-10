@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { fetchPosts, fetchUsers } from "../services/api";
 import { PostWithUser } from "../types";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: "bold",
   fontSize: 16,
@@ -37,6 +38,7 @@ const MainPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
+  const { loggedInUserEmail } = useAuth();
 
   const fetchData = async () => {
     try {
@@ -145,6 +147,7 @@ const MainPage = () => {
         }}
       >
         <Typography variant="h4">Posts</Typography>
+        <Typography variant="body1">Hello, {loggedInUserEmail}</Typography>
         <Button
           variant="contained"
           startIcon={<RefreshIcon />}

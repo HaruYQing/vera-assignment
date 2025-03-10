@@ -18,6 +18,7 @@ export interface Comment {
   name: string;
   email: string;
   body: string;
+  isOwnedByLoggedInUser?: boolean;
 }
 
 export interface PostWithUser {
